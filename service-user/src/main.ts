@@ -6,7 +6,7 @@ import morgan from 'morgan';
 dotenv.config();
 
 const host = process.env.HOST ?? 'localhost';
-const port = process.env.PORT ? Number(process.env.PORT) : 4000;
+const port = process.env.USER_PORT ? Number(process.env.USER_PORT) : 4000;
 
 const app = express();
 app.use(morgan('dev'));

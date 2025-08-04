@@ -1,22 +1,27 @@
 {
-  "name": "user-service",
+  "name": "service-auth",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "user-service/src",
+  "sourceRoot": "service-auth/src",
   "projectType": "application",
-  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
-        "outputPath": "dist/user-service",
-        "format": ["cjs"],
+        "outputPath": "dist/service-auth",
+        "format": [
+          "cjs"
+        ],
         "bundle": false,
-        "main": "user-service/src/main.ts",
-        "tsConfig": "user-service/tsconfig.app.json",
-        "assets": ["user-service/src/assets"],
+        "main": "service-auth/src/main.ts",
+        "tsConfig": "service-auth/tsconfig.app.json",
+        "assets": [
+          "service-auth/src/assets"
+        ],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -41,24 +46,22 @@
       "continuous": true,
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
-      "dependsOn": ["build"],
+      "dependsOn": [
+        "build"
+      ],
       "options": {
-        "buildTarget": "user-service:build",
+        "buildTarget": "service-auth:build",
         "runBuildTargetDependencies": false
       },
       "configurations": {
         "development": {
-          "buildTarget": "user-service:build:development"
+          "buildTarget": "service-auth:build:development"
         },
         "production": {
-          "buildTarget": "user-service:build:production"
+          "buildTarget": "service-auth:build:production"
         }
       }
-    },
-    "test": {
-      "options": {
-        "passWithNoTests": true
-      }
     }
-  }
+  },
+  "tags": []
 }
