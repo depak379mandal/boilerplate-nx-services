@@ -1,4 +1,5 @@
 onlyBuiltDependencies:
+  - '@scarf/scarf'
   - '@swc/core'
   - esbuild
   - nx

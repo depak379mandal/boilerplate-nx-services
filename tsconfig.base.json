@@ -10,16 +10,29 @@
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": [
+      "es2020",
+      "dom"
+    ],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "strictPropertyInitialization": false,
+    "esModuleInterop": true,
     "paths": {
-      "@./shared-db": ["shared-db/src/index.ts"],
-      "@./shared-middleware": ["shared-middleware/src/index.ts"],
-      "@./shared-utils": ["shared-utils/src/index.ts"]
+      "@./shared-db": [
+        "shared-db/src/index.ts"
+      ],
+      "@./shared-middleware": [
+        "shared-middleware/src/index.ts"
+      ],
+      "@./shared-utils": [
+        "shared-utils/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }

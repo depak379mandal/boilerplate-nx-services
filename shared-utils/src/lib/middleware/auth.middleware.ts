@@ -1,5 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
-import * as passport from 'passport';
+import passport from 'passport';
 import {
   ExtractJwt,
   Strategy as JwtStrategy,
