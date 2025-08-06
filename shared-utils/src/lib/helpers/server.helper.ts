@@ -48,7 +48,7 @@ export const serverSetup = async (
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(cors(corsOptions));
   app.use(helmet());
-  app.use(compression());
+  //app.use(compression());
   app.use(morgan('combined'));
   if (_initPassport) {
     app.use(initPassport);

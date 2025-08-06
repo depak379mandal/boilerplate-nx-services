@@ -8,5 +8,11 @@
   "dependencies": {
     "dotenv": "^17.2.1",
     "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typeorm": "^0.3.25",
+    "typeorm-ts-node-commonjs": "^0.3.20"
   }
 }

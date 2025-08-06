@@ -1,7 +1,7 @@
 {
-  "name": "service-auth",
+  "name": "service-cms",
   "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "service-auth/src",
+  "sourceRoot": "service-cms/src",
   "projectType": "application",
   "targets": {
     "build": {
@@ -12,15 +12,15 @@
       "defaultConfiguration": "development",
       "options": {
         "platform": "node",
-        "outputPath": "dist/service-auth",
+        "outputPath": "dist/service-cms",
         "format": [
           "cjs"
         ],
         "bundle": false,
-        "main": "service-auth/src/main.ts",
-        "tsConfig": "service-auth/tsconfig.app.json",
+        "main": "service-cms/src/main.ts",
+        "tsConfig": "service-cms/tsconfig.app.json",
         "assets": [
-          "service-auth/src/assets"
+          "service-cms/src/assets"
         ],
         "generatePackageJson": true,
         "esbuildOptions": {
@@ -48,15 +48,15 @@
   "defaultConfiguration": "development",
   "dependsOn": ["build"],
   "options": {
-    "buildTarget": "service-auth:build:development",
+    "buildTarget": "service-cms:build:development",
     "runBuildTargetDependencies": false
   },
   "configurations": {
     "development": {
-      "buildTarget": "service-auth:build:development"
+      "buildTarget": "service-cms:build:development"
     },
     "production": {
-      "buildTarget": "service-auth:build:production"
+      "buildTarget": "service-cms:build:production"
     }
   }
 }

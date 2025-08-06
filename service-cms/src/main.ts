@@ -3,7 +3,7 @@ import { serverSetup, startServer } from '@./shared-utils';
 import { openApiDocument } from './auth.swagger';
 import swaggerUi from 'swagger-ui-express';
 import router from './auth.route';
-const port = process.env.USER_PORT ? Number(process.env.USER_PORT) : 8000;
+const port = process.env.CMS_PORT ? Number(process.env.CMS_PORT) : 8001;
 
 const app = express();
 serverSetup(app);
