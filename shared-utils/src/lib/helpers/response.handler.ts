@@ -1,5 +1,32 @@
 import { Response } from 'express';
 
+// Utility function to convert camelCase to snake_case
+const toSnakeCase = (str: string): string => {
+  return str.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+};
+
+// Utility function to recursively convert object keys from camelCase to snake_case
+const convertToSnakeCase = (obj: any): any => {
+  if (obj === null || obj === undefined) {
+    return obj;
+  }
+  
+  if (Array.isArray(obj)) {
+    return obj.map(item => convertToSnakeCase(item));
+  }
+  
+  if (typeof obj === 'object') {
+    const converted: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      const snakeKey = toSnakeCase(key);
+      converted[snakeKey] = convertToSnakeCase(value);
+    }
+    return converted;
+  }
+  
+  return obj;
+};
+
 export interface PaginateResponseInput<T> {
   data: T[];
   limit: number;
@@ -8,12 +35,12 @@ export interface PaginateResponseInput<T> {
 }
 
 export interface PaginateResponse<T> {
-  totalPages: number;
-  numberOfRows: number;
-  currentPage: number;
+  total_pages: number;
+  number_of_rows: number;
+  current_page: number;
   limit: number;
-  totalRecords: number;
-  paginatedResults: T[];
+  total_records: number;
+  paginated_results: T[];
   meta?: Record<string, any>;
 }
 
@@ -60,9 +87,9 @@ export const handleResponse = <T>(
   res: Response
 ) => {
   return res.status(statusCode).json({
-    data,
+    data: data ? convertToSnakeCase(data) : data,
     message,
-    statusCode,
+    status_code: statusCode,
     status,
   });
 };
@@ -143,11 +170,11 @@ export const paginationResponse = <T>(
         total,
         limit,
         page,
-        totalPages: Math.ceil(total / limit),
-        hasNextPage: page < Math.ceil(total / limit),
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
+        total_pages: Math.ceil(total / limit),
+        has_next_page: page < Math.ceil(total / limit),
+        has_previous_page: page > 1,
+        next_page: page + 1,
+        previous_page: page - 1,
       },
       message,
       statusCode: 200,
@@ -165,12 +192,12 @@ export const paginationResponse = <T>(
     metaData: Record<string, any> = {}
   ): PaginateResponse<T> => {
     return {
-      totalPages: Math.ceil(total / limit),
-      numberOfRows: data.length,
-      currentPage: page,
+      total_pages: Math.ceil(total / limit),
+      number_of_rows: data.length,
+      current_page: page,
       limit,
-      totalRecords: total,
-      paginatedResults: data,
+      total_records: total,
+      paginated_results: data,
       meta: metaData,
     };
   };
@@ -223,4 +250,30 @@ export const paginateQuery = (
     filterType,
     filterValue: parsedFilterValue
   };
+};
+
+// Test function to verify snake_case conversion
+export const testSnakeCaseConversion = () => {
+  const testData = {
+    totalPages: 1,
+    numberOfRows: 3,
+    currentPage: 1,
+    limit: 10,
+    totalRecords: 3,
+    paginatedResults: [
+      {
+        id: 3,
+        title: "ss",
+        description: "ss",
+        slug: "ss1",
+        status: "Active"
+      }
+    ],
+    meta: {}
+  };
+
+  const converted = convertToSnakeCase(testData);
+  console.log('Original:', testData);
+  console.log('Converted:', converted);
+  return converted;
 };

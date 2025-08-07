@@ -1,6 +1,6 @@
 import {
   Entity, PrimaryGeneratedColumn, Column,
-  ManyToOne, CreateDateColumn, UpdateDateColumn
+  ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn
 } from "typeorm";
 import { Page } from "./Page";
 import { Faq } from "./Faq";
@@ -11,6 +11,7 @@ export class PageRevision {
   id: number;
 
   @ManyToOne(() => Page, (page) => page.pageRevisions)
+  @JoinColumn({ name: "page_id" })
   page: Page;
 
   @Column({ name: "title", length: 500 })
@@ -44,6 +45,7 @@ export class PageRevision {
   includeSidebar: boolean;
 
   @ManyToOne(() => Faq, (faq) => faq.pageRevisions, { nullable: true })
+  @JoinColumn({ name: "faq_id" })
   faq: Faq;
 
   @CreateDateColumn({ name: "created_at" })

@@ -1,15 +1,18 @@
-import { AppDataSource, User, Category } from '@./shared-db';
+import { AppDataSource, User, Category, BlogComment } from '@./shared-db';
 import { CreatedResponse, OkResponse, ErrorResponse, NotFoundResponse, paginateQuery, paginateResponse} from '@./shared-utils';
 import { Request, Response } from 'express';
 import { registerSchema, getBlogsSchema } from '../schemas/blogs.schema';
 import { z } from 'zod';
 import { SuccessMessages, ErrorMessages } from '../common/message';
 import * as service from './blogs.service';
+import * as commentService from '../comments/comments.service';
 import { In } from 'typeorm';
 import * as common from '../common/constants';
+import { BlogCategoryOptions } from '../blogsCategory/blogsCategory.types';
 
 const userRepository = AppDataSource.getRepository(User);
 const categoryRepository = AppDataSource.getRepository(Category);
+const commentRepository = AppDataSource.getRepository(BlogComment);
 
 export const createBlog = async (req: Request, res: Response) => {
   const { name } = req.body as z.infer<typeof registerSchema>;
@@ -130,7 +133,7 @@ export const addBlog = async (req: Request, res: Response) => {
 
 export const getSingleBlog = async (req: Request, res: Response) => {
   try {
-    const blogId = parseInt(req.params.id);
+    const blogId = parseInt(req.params.blog_id);
 
     const blog = await service.detailBlog(blogId);
 
@@ -190,7 +193,7 @@ export const getBlogBySlug = async (req: Request, res: Response) => {
 
 export const updateBlog = async (req: Request, res: Response) => {
   try {
-    const blogId = parseInt(req.params.id);
+    const blogId = parseInt(req.params.blog_id);
 
     const blogDetail = await service.detailBlog(blogId);
 
@@ -201,7 +204,7 @@ export const updateBlog = async (req: Request, res: Response) => {
       );
     }
 
-    const { title, description, slug, category, components, css, pagedata, status, userId, thumbnail } = req.body;
+    const { title, description, slug, category, components, css, pagedata, status, user_id, thumbnail } = req.body;
 
     const blog = await service.checkSlugExcludeId(blogId, slug);
     
@@ -228,7 +231,7 @@ export const updateBlog = async (req: Request, res: Response) => {
       }
     }
 
-    const blogData = { title, description, slug, category, components, css, pagedata, status, userId, thumbnail };
+    const blogData = { title, description, slug, category, components, css, pagedata, status, user_id, thumbnail };
 
     const result = await service.updateBlog(blogId, blogData);
 
@@ -310,7 +313,7 @@ export const removeBlogs = async (req: Request, res: Response) => {
 
 export const updateBlogSlug = async (req: Request, res: Response) => {
   try {
-    const blogId = parseInt(req.params.id);
+    const blogId = parseInt(req.params.blog_id);
     const { slug } = req.body;
 
     const blogDetail = await service.detailBlog(blogId);
@@ -352,7 +355,7 @@ export const updateBlogSlug = async (req: Request, res: Response) => {
 
 export const updateBlogStatus = async (req: Request, res: Response) => {
   try {
-    const blogId = parseInt(req.params.id);
+    const blogId = parseInt(req.params.blog_id);
     const { status } = req.body;
 
     const blog = await service.detailBlog(blogId);
@@ -433,142 +436,168 @@ export const listBlogs = async (req: Request, res: Response) => {
   }
 };
 
-// export const addComment = async (req: Request, res: Response) => {
-//   try {
-//     const { blogId, comment, websiteUrl } = req.body;
+export const addComment = async (req: Request, res: Response) => {
+  try {
+    const { blog_id, comment, website_url, user_id } = req.body;
 
-//     const userId = req.userId;
-//     console.log('userId :- ', userId);
+    // Check if blog exists
+    const blog = await service.getBlogById(blog_id);
 
-//     if (typeof userId !== 'number') {
-//       return ErrorResponse(
-//         { message: "Invalid blogId or userId" },
-//         res
-//       );
-//     }
+    if (!blog) {
+      return NotFoundResponse(
+        { message: SuccessMessages.BLOG_NOT_FOUND },
+        res
+      );
+    }
 
-//     const blog = await service.getBlogById(blogId);
+    // Check if user exists (if user_id is provided)
+    if (user_id) {
+      const user = await userRepository.findOneBy({ id: user_id });
+      if (!user) {
+        return NotFoundResponse(
+          { message: `User with ID ${user_id} does not exist` },
+          res
+        );
+      }
+    }
 
-//     if (!blog) {
-//       return NotFoundResponse(
-//         { message: SuccessMessages.BLOG_NOT_FOUND },
-//         res
-//       );
-//     }
+    const result = await commentService.createComment({ blog_id, user_id, comment, website_url });
 
-//     const result = await commentService.createComment({ blogId, userId, comment, websiteUrl });
+    return OkResponse(
+      {
+        message: SuccessMessages.COMMENT_ADDED_SUCCESSFULLY,
+        data: result,
+        statusCode: 201,
+      },
+      res
+    );
+  } catch (error: any) {
+    console.log(error);
+    return ErrorResponse(
+      { message: ErrorMessages.INTERNAL_SERVER_ERROR },
+      res
+    );
+  }
+};
 
-//     return OkResponse(
-//       {
-//         message: SuccessMessages.COMMENT_ADDED_SUCCESSFULLY,
-//         data: result,
-//         statusCode: 201,
-//       },
-//       res
-//     );
-//   } catch (error: any) {
-//     console.log(error);
-//     return ErrorResponse(
-//       { message: ErrorMessages.INTERNAL_SERVER_ERROR },
-//       res
-//     );
-//   }
-// };
+export const listComment = async (req: Request, res: Response) => {
+  try {
+    const {
+      page,
+      limit,
+      skip,
+      sortingDirection,
+      sortingKey,
+      filterType,
+      filterValue
+    } = paginateQuery(req.query, 
+      {
+        filterKeys: ['comment', 'status', 'user'],
+        sortingKeys: ['comment', 'status', 'user'],
+        defaultSortingKey: 'id',
+      }
+    );
 
-// export const listComment = async (req: Request, res: Response) => {
-//   try {
-//     const {
-//       page,
-//       limit,
-//       skip,
-//       sortingDirection,
-//       sortingKey,
-//       filterType,
-//       filterValue
-//     } = paginateQuery(req.query, 
-//       {
-//         filterKeys: ['comment', 'status', 'user'],
-//         sortingKeys: ['comment', 'status', 'user'],
-//         defaultSortingKey: 'id',
-//       }
-//     );
+    const { searchTerm } = req.query as { searchTerm?: string };
 
-//     const { searchTerm } = req.query as { searchTerm?: string };
+    const blogId = parseInt(req.params.blog_id);
 
-//     const blogId = parseInt(req.params.id);
+    const { blogComments, total } = await commentService.listComment({
+      page,
+      limit,
+      skip,
+      sortingDirection,
+      sortingKey,
+      filterType,
+      filterValue,
+      searchTerm
+    }, blogId);
 
-//     const { blogComments, total } = await commentService.listComment({
-//       page,
-//       limit,
-//       skip,
-//       sortingDirection,
-//       sortingKey,
-//       filterType,
-//       filterValue,
-//       searchTerm
-//     }, blogId);
+    const paginatedResult = paginateResponse({ data: blogComments, limit, page, total });
 
-//     const paginatedResult = paginateResponse({ data: blogComments, limit, page, total });
+    return OkResponse(
+      {
+        message: SuccessMessages.COMMENT_FETCHED,
+        data: paginatedResult,
+        statusCode: 200,
+      },
+      res
+    );
+  } catch (error: any) {
+    console.log(error);
+    return ErrorResponse(
+      { message: ErrorMessages.INTERNAL_SERVER_ERROR },
+      res
+    );
+  }
+};
 
-//     return OkResponse(
-//       {
-//         message: SuccessMessages.COMMENT_FETCHED,
-//         data: paginatedResult,
-//         statusCode: 200,
-//       },
-//       res
-//     );
-//   } catch (error: any) {
-//     console.log(error);
-//     return ErrorResponse(
-//       { message: ErrorMessages.INTERNAL_SERVER_ERROR },
-//       res
-//     );
-//   }
-// };
+export const updateCommentStatus = async (req: Request, res: Response) => {
+  try {
+    const { ids: commentIds, status } = req.body;
 
-// export const updateCommentStatus = async (req: Request, res: Response) => {
-//   try {
-//     const { ids: commentIds, status } = req.body;
+    // Check if comments exist
+    const existingComments = await commentService.checkCommentsExist(commentIds);
+    const existingIds = existingComments.map(comment => comment.id);
+    const nonExistingIds = commentIds.filter(id => !existingIds.includes(id));
 
-//     await commentService.updateCommentStatus(commentIds, status);
+    if (nonExistingIds.length > 0) {
+      return NotFoundResponse(
+        { message: `Comment IDs ${nonExistingIds.join(', ')} do not exist` },
+        res
+      );
+    }
 
-//     return OkResponse(
-//       {
-//         message: SuccessMessages.STATUS_UPDATED_SUCCESSFULLY,
-//         data: {},
-//         statusCode: 200,
-//       },
-//       res
-//     );
-//   } catch (error: any) {
-//     console.log(error);
-//     return ErrorResponse(
-//       { message: ErrorMessages.INTERNAL_SERVER_ERROR },
-//       res
-//     );
-//   }
-// };
+    await commentService.updateCommentStatus(commentIds, status);
 
-// export const removeComments = async (req: Request, res: Response) => {
-//   try {
-//     const commentIds = req.body.ids;
+    return OkResponse(
+      {
+        message: SuccessMessages.STATUS_UPDATED_SUCCESSFULLY,
+        data: {},
+        statusCode: 200,
+      },
+      res
+    );
+  } catch (error: any) {
+    console.log(error);
+    return ErrorResponse(
+      { message: ErrorMessages.INTERNAL_SERVER_ERROR },
+      res
+    );
+  }
+};
 
-//     await commentService.deleteComments(commentIds);
+export const removeComments = async (req: Request, res: Response) => {
+  try {
+    const commentIds = req.body.ids;
 
-//     return OkResponse(
-//       {
-//         message: SuccessMessages.COMMENT_DELETED_SUCCESSFULLY,
-//         data: {},
-//         statusCode: 200,
-//       },
-//       res
-//     );
-//   } catch (error: any) {
-//     console.log(error);
-//     return ErrorResponse(
-//       { message: ErrorMessages.INTERNAL_SERVER_ERROR },
-//       res
-//     );
-//   }
-// };
+    // Check if comments exist
+    const existingComments = await commentService.checkCommentsExist(commentIds);
+    const existingIds = existingComments.map(comment => comment.id);
+    const nonExistingIds = commentIds.filter(id => !existingIds.includes(id));
+
+    if (nonExistingIds.length > 0) {
+      return NotFoundResponse(
+        { message: `Comment IDs ${nonExistingIds.join(', ')} do not exist` },
+        res
+      );
+    }
+
+    await commentService.deleteComments(commentIds);
+
+    return OkResponse(
+      {
+        message: SuccessMessages.COMMENT_DELETED_SUCCESSFULLY,
+        data: {},
+        statusCode: 200,
+      },
+      res
+    );
+  } catch (error: any) {
+    console.log(error);
+    return ErrorResponse(
+      { message: ErrorMessages.INTERNAL_SERVER_ERROR },
+      res
+    );
+  }
+};

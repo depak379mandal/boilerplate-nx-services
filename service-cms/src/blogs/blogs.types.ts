@@ -12,11 +12,11 @@ export interface Blogs {
 }
 
 export interface BlogComments {
-    blogId: number;
-    userId: number;
-    comment: string;
-    websiteUrl?: string;
-    status?: boolean;
+  blog_id: number;
+  user_id?: number;
+  comment: string;
+  website_url?: string;
+  status?: boolean;
 }
 
 

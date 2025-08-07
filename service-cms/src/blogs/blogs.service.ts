@@ -58,7 +58,20 @@ export const createBlog = async (data: Blogs) => {
       }
     }
 
-    return blog;
+    return {
+      id: blog.id,
+      title: blog.title,
+      description: blog.description,
+      slug: blog.slug,
+      thumbnail: blog.thumbnail,
+      components: blog.components,
+      css: blog.css,
+      pagedata: blog.pagedata,
+      status: blog.status,
+      is_deleted: blog.isDeleted,
+      created_at: blog.createdAt?.toISOString(),
+      updated_at: blog.updatedAt?.toISOString(),
+    };
   } catch (error) {
     console.error('Error creating blog:', error);
     throw error;

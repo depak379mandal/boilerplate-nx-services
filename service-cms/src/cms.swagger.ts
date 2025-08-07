@@ -25,11 +25,13 @@ import {
   blogIdsValidation, 
   createCommentValidation, 
   updateCommentStatusValidation, 
+  deleteCommentsValidation,
   deleteBlogsValidation, 
   listBlogsValidation, 
   listCommentsValidation,
   detailBlogValidation
 } from './schemas/blogs.schema';
+import { ValidationMessages } from './common/message';
 
 const registry = new OpenAPIRegistry();
 
@@ -64,7 +66,7 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog Category'],
   method: 'post',
   path: '/cms/blog_category/create-blog-category',
   request: {
@@ -90,7 +92,7 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog Category'],
   method: 'get',
   path: '/cms/blog_category/list',
   request: {
@@ -110,9 +112,9 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog Category'],
   method: 'get',
-  path: '/cms/blog_category/detail/{id}',
+  path: '/cms/blog_category/detail/{category_id}',
   request: {
     params: detailBlogCategorySchema,
   },
@@ -130,7 +132,7 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog Category'],
   method: 'get',
   path: '/cms/blog_category/by-slug/{slug}',
   request: {
@@ -150,12 +152,12 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog Category'],
   method: 'put',
-  path: '/cms/blog_category/update-slug/{id}',
+  path: '/cms/blog_category/update-slug/{category_id}',
   request: {
     params: z.object({
-      id: z.string('ID is required'),
+      category_id: z.string('Category ID is required'),
     }),
     body: {
       content: {
@@ -182,12 +184,12 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog Category'],
   method: 'put',
-  path: '/cms/blog_category/update-status/{id}',
+  path: '/cms/blog_category/update-status/{category_id}',
   request: {
     params: z.object({
-      id: z.string('ID is required'),
+      category_id: z.string('Category ID is required'),
     }),
     body: {
       content: {
@@ -214,12 +216,12 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog Category'],
   method: 'put',
-  path: '/cms/blog_category/update/{id}',
+  path: '/cms/blog_category/update/{category_id}',
   request: {
     params: z.object({
-      id: z.string('ID is required'),
+      category_id: z.string('Category ID is required'),
     }),
     body: {
       content: {
@@ -246,7 +248,7 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog Category'],
   method: 'delete',
   path: '/cms/blog_category/delete',
   request: {
@@ -273,7 +275,7 @@ registry.registerPath({
 
 // Blog routes
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog'],
   method: 'post',
   path: '/cms/blog/create',
   request: {
@@ -310,7 +312,7 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog'],
   method: 'get',
   path: '/cms/blog/list',
   request: {
@@ -330,11 +332,13 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog'],
   method: 'get',
-  path: '/cms/blog/detail/{id}',
+  path: '/cms/blog/detail/{blog_id}',
   request: {
-    params: detailBlogValidation,
+    params: z.object({
+      blog_id: z.string(ValidationMessages.BLOG_ID_REQUIRED),
+    }),
   },
   responses: {
     200: {
@@ -350,7 +354,7 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog'],
   method: 'get',
   path: '/cms/blog/by-slug/{slug}',
   request: {
@@ -370,12 +374,12 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog'],
   method: 'put',
-  path: '/cms/blog/update-slug/{id}',
+  path: '/cms/blog/update-slug/{blog_id}',
   request: {
     params: z.object({
-      id: z.string('ID is required'),
+      blog_id: z.string(ValidationMessages.BLOG_ID_REQUIRED),
     }),
     body: {
       content: {
@@ -405,12 +409,12 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog'],
   method: 'put',
-  path: '/cms/blog/update-status/{id}',
+  path: '/cms/blog/update-status/{blog_id}',
   request: {
     params: z.object({
-      id: z.string('ID is required'),
+      blog_id: z.string(ValidationMessages.BLOG_ID_REQUIRED),
     }),
     body: {
       content: {
@@ -437,12 +441,12 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog'],
   method: 'put',
-  path: '/cms/blog/update/{id}',
+  path: '/cms/blog/update/{blog_id}',
   request: {
     params: z.object({
-      id: z.string('ID is required'),
+      blog_id: z.string(ValidationMessages.BLOG_ID_REQUIRED),
     }),
     body: {
       content: {
@@ -479,7 +483,7 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Blog'],
   method: 'delete',
   path: '/cms/blog/delete',
   request: {
@@ -522,14 +526,20 @@ registry.registerPath({
 
 // Comment routes
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Comment'],
   method: 'post',
-  path: '/cms/comment/add',
+  path: '/cms/comment/create',
   request: {
     body: {
       content: {
         'application/json': {
           schema: createCommentValidation,
+          example: {
+            blog_id: 1,
+            user_id: 1, // Optional - can be omitted
+            comment: "This is a great blog post!",
+            website_url: "https://example.com"
+          },
         },
       },
     },
@@ -551,12 +561,12 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Comment'],
   method: 'get',
-  path: '/cms/comment/list/{blogId}',
+  path: '/cms/comment/list/{blog_id}',
   request: {
     params: z.object({
-      blogId: z.string('Blog ID is required'),
+      blog_id: z.string(ValidationMessages.BLOG_ID_REQUIRED),
     }),
     query: listCommentsValidation,
   },
@@ -574,7 +584,7 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Comment'],
   method: 'put',
   path: '/cms/comment/update-status',
   request: {
@@ -600,17 +610,17 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  tags: ['CMS'],
+  tags: ['Comment'],
   method: 'delete',
   path: '/cms/comment/delete',
   request: {
     body: {
       content: {
         'application/json': {
-          schema: z.object({
-            ids: z.array(z.number().positive('Each ID must be a positive integer'))
-              .min(1, 'At least one ID is required'),
-          }),
+          schema: deleteCommentsValidation,
+          example: {
+            ids: [1, 2, 3]
+          },
         },
       },
     },
@@ -621,6 +631,9 @@ registry.registerPath({
     },
     400: {
       description: 'Bad request - validation error',
+    },
+    404: {
+      description: 'Comment not found',
     },
     500: {
       description: 'Internal server error',
@@ -635,4 +648,10 @@ export const openApiDocument = generator.generateDocument({
     title: 'CMS Service',
     version: '1.0.0',
   },
+  servers: [
+    {
+      url: '/api/v1',
+      description: 'API base path',
+    },
+  ],
 });

@@ -75,6 +75,52 @@ export enum SuccessMessages {
   CATEGORY_ID_INVALID = 'Category ID is invalid',
   CATEGORY_ASSOCIATED_WITH_BLOG = 'Category is associated with blog, cannot delete',
   FAQ_ASSOCIATED_WITH_PAGE = 'Faq is associated with pages, cannot delete',
+  // Additional validation messages
+  WEBSITE_URL_VALID = 'Website URL must be a valid URL',
+  USER_ID_POSITIVE_INT = 'User ID must be a positive integer',
+}
+
+export enum ValidationMessages {
+  // Title validation messages
+  TITLE_REQUIRED = 'Title is required',
+  TITLE_STRING = 'Title must be a string',
+  TITLE_MAX_LENGTH = 'Title must be under 500 characters',
+  
+  // Slug validation messages
+  SLUG_REQUIRED = 'Slug is required',
+  SLUG_VALID = 'Slug must be a valid slug (lowercase, no spaces, hyphens only)',
+  
+  // ID validation messages
+  ID_REQUIRED = 'ID parameter is required',
+  ID_POSITIVE_INT = 'ID must be a positive integer',
+  BLOG_ID_REQUIRED = 'Blog ID is required',
+  BLOG_ID_POSITIVE_INT = 'Blog ID must be a positive integer',
+  USER_ID_POSITIVE_INT = 'User ID must be a positive integer',
+  
+  // Status validation messages
+  STATUS_REQUIRED = 'Status is required',
+  STATUS_BOOLEAN = 'Status must be a boolean (true or false)',
+  
+  // Array validation messages
+  IDS_REQUIRED = 'ids field is required',
+  IDS_NON_EMPTY_ARRAY = 'ids must be a non-empty array',
+  IDS_EACH_POSITIVE_INT = 'Each id must be a positive integer',
+  
+  // Description validation messages
+  DESCRIPTION_STRING = 'Description must be a string',
+  
+  // Type validation messages
+  TYPE_REQUIRED = 'Type is required',
+  TYPE_STRING = 'Type must be a string',
+  TYPE_MAX_LENGTH = 'Type must be under 255 characters',
+  
+  // Comment validation messages
+  COMMENT_REQUIRED = 'Comment is required',
+  COMMENT_STRING = 'Comment must be a string',
+  
+  // URL validation messages
+  WEBSITE_URL_REQUIRED = 'Website URL is required',
+  WEBSITE_URL_VALID = 'Website URL must be a valid URL',
 }
 
 export enum ErrorMessages {

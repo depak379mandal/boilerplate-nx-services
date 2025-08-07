@@ -49,7 +49,7 @@ export const addBlogCategory = async (req: Request, res: Response) => {
 
 export const getSingleBlogCategory = async (req: Request, res: Response) => {
   try {
-    const blogCategoryId = parseInt(req.params.id);
+    const blogCategoryId = parseInt(req.params.category_id);
 
     const blogCategory = await service.detailBlogCategory(blogCategoryId);
 
@@ -109,7 +109,7 @@ export const getBlogCategoryBySlug = async (req: Request, res: Response) => {
 
 export const updateBlogCategory = async (req: Request, res: Response) => {
   try {
-    const blogCategoryId = parseInt(req.params.id);
+    const blogCategoryId = parseInt(req.params.category_id);
 
     const blogCategoryDetail = await service.detailBlogCategory(blogCategoryId);
 
@@ -120,7 +120,7 @@ export const updateBlogCategory = async (req: Request, res: Response) => {
       );
     }
 
-    const { title, description, slug, category, status, userId} = req.body;
+    const { title, description, slug, category, status, user_id} = req.body;
 
     const blogCategory = await service.checkSlugExcludeId(blogCategoryId,slug);
     
@@ -131,7 +131,7 @@ export const updateBlogCategory = async (req: Request, res: Response) => {
       );
     }
 
-    const blogCategoryData = { title, description, slug, category, status, userId}
+    const blogCategoryData = { title, description, slug, category, status, user_id}
 
     const result = await service.updateBlogCategory(blogCategoryId,blogCategoryData);
 
@@ -199,7 +199,7 @@ export const removeBlogCategory = async (req: Request, res: Response) => {
 
 export const updateSlug = async (req: Request, res: Response) => {
   try {
-    const blogCategoryId = parseInt(req.params.id);
+    const blogCategoryId = parseInt(req.params.category_id);
     const { slug } = req.body
 
     const blogCategoryDetail = await service.detailBlogCategory(blogCategoryId);
@@ -241,7 +241,7 @@ export const updateSlug = async (req: Request, res: Response) => {
 
 export const updateStatus = async (req: Request, res: Response) => {
   try {
-    const blogCategoryId = parseInt(req.params.id);
+    const blogCategoryId = parseInt(req.params.category_id);
     const { status } = req.body
 
     const blogCategory = await service.detailBlogCategory(blogCategoryId);

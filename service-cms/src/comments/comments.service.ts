@@ -18,13 +18,13 @@ const blogCommentRepository = AppDataSource.getRepository(BlogComment);
  */
 export const createComment = async (data: BlogComments) => {
   try {
-    const { blogId, userId, comment, websiteUrl, status } = data;
+    const { blog_id, user_id, comment, website_url, status } = data;
 
     const blogComment = blogCommentRepository.create({
-      blog: { id: blogId },
-      user: { id: userId },
+      blog: { id: blog_id },
+      user: user_id ? { id: user_id } : undefined,
       comment,
-      websiteUrl,
+      websiteUrl: website_url,
       status,
     });
 
@@ -61,6 +61,23 @@ export const listComment = async (options: BlogOptions, blogId: number) => {
       );
     }
 
+    // Get total count first
+    const countQuery = blogCommentRepository
+      .createQueryBuilder('bc')
+      .leftJoin(User, 'u', 'u.id = bc.user_id')
+      .where('bc.blog_id = :blogId', { blogId });
+
+    if (searchTerm && searchTerm.trim()) {
+      countQuery.andWhere(
+        `(bc.comment ILIKE :term OR u.name ILIKE :term OR ` +
+          `CASE WHEN bc.status THEN 'Active' ELSE 'Inactive' END ILIKE :term)`,
+        { term: `%${searchTerm}%` }
+      );
+    }
+
+    const total = await countQuery.getCount();
+
+    // Apply ordering and pagination
     queryBuilder
       .orderBy(
         `bc.${sortingKey}`,
@@ -69,11 +86,9 @@ export const listComment = async (options: BlogOptions, blogId: number) => {
       .skip(skip)
       .take(limit);
 
-    const { entities: blogComments, raw } =
-      await queryBuilder.getRawAndEntities();
-    const total = blogComments.length;
+    const rawResults = await queryBuilder.getRawMany();
 
-    return { blogComments, total };
+    return { blogComments: rawResults, total };
   } catch (error) {
     console.error('Error listing comments:', error);
     throw error;
@@ -91,6 +106,23 @@ export const updateCommentStatus = async (ids: number[], status: boolean) => {
     );
   } catch (error) {
     console.error('Error updating comment status:', error);
+    throw error;
+  }
+};
+
+/**
+ * Check if comments exist
+ */
+export const checkCommentsExist = async (commentIds: number[]) => {
+  try {
+    return await blogCommentRepository.find({
+      where: {
+        id: In(commentIds) as any,
+      },
+      select: ['id'],
+    });
+  } catch (error) {
+    console.error('Error checking if comments exist:', error);
     throw error;
   }
 };

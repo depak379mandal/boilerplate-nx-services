@@ -1,6 +1,6 @@
 import {
   Entity, PrimaryGeneratedColumn, Column,
-  ManyToOne, CreateDateColumn, UpdateDateColumn
+  ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn
 } from "typeorm";
 import { Blog } from "./Blog";
 import { User } from "./user.entity";
@@ -11,9 +11,11 @@ export class BlogComment {
   id: number;
 
   @ManyToOne(() => Blog, (blog) => blog.blogComments)
+  @JoinColumn({ name: "blog_id" })
   blog: Blog;
 
   @ManyToOne(() => User, (user) => user.blogComments)
+  @JoinColumn({ name: "user_id" })
   user: User;
 
   @Column({ name: "comment", length: 1000 })
