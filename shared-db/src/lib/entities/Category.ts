@@ -9,25 +9,25 @@ export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 255 })
+  @Column({ name: "title", length: 255 })
   title: string;
 
-  @Column({ length: 500 })
+  @Column({ name: "description", length: 500 })
   description: string;
 
-  @Column({ length: 45 })
+  @Column({ name: "slug", length: 45 })
   slug: string;
 
-  @Column({ default: true, nullable: true })
+  @Column({ name: "status", default: true, nullable: true })
   status: boolean;
 
-  @Column({ default: false })
+  @Column({ name: "is_deleted", default: false })
   isDeleted: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: "updated_at" })
   updatedAt: Date;
 
   @OneToMany(() => BlogCategory, (bc) => bc.category)

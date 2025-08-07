@@ -10,28 +10,28 @@ export class Faq {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 45 })
+  @Column({ name: "title", length: 45 })
   title: string;
 
-  @Column({ length: 500 })
+  @Column({ name: "description", length: 500 })
   description: string;
 
-  @Column({ default: true, nullable: true })
+  @Column({ name: "template", default: true, nullable: true })
   template: boolean;
 
-  @Column({ type: "text" })
+  @Column({ name: "data", type: "text" })
   data: string;
 
-  @Column({ default: true, nullable: true })
+  @Column({ name: "status", default: true, nullable: true })
   status: boolean;
 
-  @Column({ default: false })
+  @Column({ name: "is_deleted", default: false })
   isDeleted: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: "updated_at" })
   updatedAt: Date;
 
   @OneToMany(() => Page, (page) => page.faq)

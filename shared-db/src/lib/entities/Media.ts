@@ -8,24 +8,24 @@ export class Media {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 255 })
+  @Column({ name: "title", length: 255 })
   title: string;
 
-  @Column({ length: 255 })
+  @Column({ name: "url", length: 255 })
   url: string;
 
-  @Column({ length: 255 })
+  @Column({ name: "file_name", length: 255 })
   fileName: string;
 
-  @Column({ length: 30 })
+  @Column({ name: "type", length: 30 })
   type: string;
 
-  @Column({ default: false })
+  @Column({ name: "is_deleted", default: false })
   isDeleted: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: "updated_at" })
   updatedAt: Date;
 }

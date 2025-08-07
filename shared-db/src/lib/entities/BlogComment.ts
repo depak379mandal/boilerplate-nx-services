@@ -16,18 +16,18 @@ export class BlogComment {
   @ManyToOne(() => User, (user) => user.blogComments)
   user: User;
 
-  @Column({ length: 1000 })
+  @Column({ name: "comment", length: 1000 })
   comment: string;
 
-  @Column({ nullable: true })
+  @Column({ name: "website_url", nullable: true })
   websiteUrl: string;
 
-  @Column({ default: true })
+  @Column({ name: "status", default: true })
   status: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: "created_at" })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: "updated_at" })
   updatedAt: Date;
 }

@@ -1,8 +1,8 @@
 import express, { RequestHandler } from 'express';
 import { serverSetup, startServer } from '@./shared-utils';
-import { openApiDocument } from './auth.swagger';
+import { openApiDocument } from './cms.swagger';
 import swaggerUi from 'swagger-ui-express';
-import router from './auth.route';
+import router from './cms.route';
 const port = process.env.CMS_PORT ? Number(process.env.CMS_PORT) : 8001;
 
 const app = express();

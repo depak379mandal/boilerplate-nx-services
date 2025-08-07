@@ -16,6 +16,7 @@ export const validationMiddleware = (
         },
         res
       );
+      return;
     }
     next();
   };
