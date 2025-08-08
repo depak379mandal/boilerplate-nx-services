@@ -51,19 +51,19 @@ registry.register('SlugBlogRequest', slugBlogValidation);
 registry.register('DetailBySlugRequest', detailBySlugValidation);
 registry.register('BlogIdsRequest', blogIdsValidation);
 
-registry.registerPath({
-  tags: ['CMS'],
-  method: 'get',
-  path: '/cms/get-blogs',
-  request: {
-    query: getBlogsSchema, 
-  },
-  responses: {
-    200: {
-      description: 'Blogs fetched successfully',
-    },
-  },
-});
+// registry.registerPath({
+//   tags: ['CMS'],
+//   method: 'get',
+//   path: '/cms/get-blogs',
+//   request: {
+//     query: getBlogsSchema, 
+//   },
+//   responses: {
+//     200: {
+//       description: 'Blogs fetched successfully',
+//     },
+//   },
+// });
 
 registry.registerPath({
   tags: ['Blog Category'],

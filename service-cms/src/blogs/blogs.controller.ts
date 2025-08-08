@@ -16,15 +16,13 @@ const commentRepository = AppDataSource.getRepository(BlogComment);
 
 export const createBlog = async (req: Request, res: Response) => {
   const { name } = req.body as z.infer<typeof registerSchema>;
-  console.log('name', name);
   const user = await userRepository.save({
     name,
   });
   return OkResponse(
     {
       message: SuccessMessages.BLOG_ADDED_SUCCESSFULLY,
-      data: user,
-      statusCode: 200,
+      data: user
     },
     res
   );
@@ -47,7 +45,7 @@ export const getBlogs = async (req: Request, res: Response) => {
       {
         message: SuccessMessages.BLOG_FETCHED,
         data: dummyData,
-        statusCode: 200,
+        
       },
       res
     );
@@ -115,8 +113,7 @@ export const addBlog = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.BLOG_ADDED_SUCCESSFULLY,
-        data: result,
-        statusCode: 200,
+        data: result
       },
       res
     );
@@ -147,8 +144,7 @@ export const getSingleBlog = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.BLOG_FETCHED,
-        data: blog,
-        statusCode: 200,
+        data: blog
       },
       res
     );
@@ -238,8 +234,7 @@ export const updateBlog = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.BLOG_UPDATED,
-        data: result,
-        statusCode: 200,
+        data: result
       },
       res
     );
@@ -297,8 +292,7 @@ export const removeBlogs = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.BLOG_DELETED_SUCCESSFULLY,
-        data: {},
-        statusCode: 200,
+        data: {}
       },
       res
     );
@@ -339,8 +333,7 @@ export const updateBlogSlug = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.BLOG_UPDATED_SUCCESSFULLY,
-        data: {},
-        statusCode: 200,
+        data: {}
       },
       res
     );
@@ -372,8 +365,7 @@ export const updateBlogStatus = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.BLOG_UPDATED_SUCCESSFULLY,
-        data: {},
-        statusCode: 200,
+        data: {}
       },
       res
     );
@@ -422,8 +414,7 @@ export const listBlogs = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.BLOG_FETCHED,
-        data: paginatedResult,
-        statusCode: 200,
+        data: paginatedResult
       },
       res
     );
@@ -466,8 +457,7 @@ export const addComment = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.COMMENT_ADDED_SUCCESSFULLY,
-        data: result,
-        statusCode: 201,
+        data: result
       },
       res
     );
@@ -518,8 +508,7 @@ export const listComment = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.COMMENT_FETCHED,
-        data: paginatedResult,
-        statusCode: 200,
+        data: paginatedResult
       },
       res
     );
@@ -553,8 +542,7 @@ export const updateCommentStatus = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.STATUS_UPDATED_SUCCESSFULLY,
-        data: {},
-        statusCode: 200,
+        data: {}
       },
       res
     );
@@ -588,8 +576,7 @@ export const removeComments = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.COMMENT_DELETED_SUCCESSFULLY,
-        data: {},
-        statusCode: 200,
+        data: {}
       },
       res
     );

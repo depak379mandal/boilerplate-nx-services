@@ -10,6 +10,15 @@ const convertToSnakeCase = (obj: any): any => {
   if (obj === null || obj === undefined) {
     return obj;
   }
+
+  // Serialize Date-like objects that expose toISOString()
+  if (typeof obj === 'object' && typeof (obj as any).toISOString === 'function') {
+    try {
+      return (obj as any).toISOString();
+    } catch {
+      // fall through if toISOString throws
+    }
+  }
   
   if (Array.isArray(obj)) {
     return obj.map(item => convertToSnakeCase(item));
@@ -100,7 +109,7 @@ export const OkResponse = <T>(
     data,
     message,
     statusCode = 200,
-  }: { data?: T; message: string; statusCode: number },
+  }: { data?: T; message: string; statusCode?: number },
   res: Response
 ) => handleResponse({ data, message, statusCode }, res);
 

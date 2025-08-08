@@ -31,8 +31,7 @@ export const addBlogCategory = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.BLOG_ADDED_SUCCESSFULLY,
-        data: result,
-        statusCode: 200,
+        data: result
       },
       res
     );
@@ -63,8 +62,7 @@ export const getSingleBlogCategory = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.CATEGORY_FETCHED,
-        data: blogCategory,
-        statusCode: 200,
+        data: blogCategory
       },
       res
     );
@@ -93,8 +91,7 @@ export const getBlogCategoryBySlug = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.CATEGORY_FETCHED,
-        data: blogCategory,
-        statusCode: 200,
+        data: blogCategory
       },
       res
     );
@@ -138,8 +135,7 @@ export const updateBlogCategory = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.CATEGORY_UPDATED,
-        data: result,
-        statusCode: 200,
+        data: result
       },
       res
     );
@@ -183,8 +179,7 @@ export const removeBlogCategory = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.CATEGORY_DELETED_SUCCESSFULLY,
-        data: {},
-        statusCode: 200,
+        data: {}
       },
       res
     );
@@ -225,8 +220,7 @@ export const updateSlug = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.CATEGORY_UPDATED_SUCCESSFULLY,
-        data: {},
-        statusCode: 200,
+        data: {}
       },
       res
     );
@@ -258,8 +252,7 @@ export const updateStatus = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.CATEGORY_UPDATED_SUCCESSFULLY,
-        data: {},
-        statusCode: 200,
+        data: {}
       },
       res
     );
@@ -308,8 +301,7 @@ export const listBlogCategorys = async (req: Request, res: Response) => {
     return OkResponse(
       {
         message: SuccessMessages.CATEGORY_FETCHED,
-        data: paginatedResult,
-        statusCode: 200,
+        data: paginatedResult
       },
       res
     );

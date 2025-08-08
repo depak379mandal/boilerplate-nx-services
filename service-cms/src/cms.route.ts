@@ -17,7 +17,7 @@ import { addBlogCategory, listBlogCategorys, getSingleBlogCategory, getBlogCateg
 const router = Router();
 
 router.post('/cms/create-blog', validationMiddleware(createBlogValidation), createBlog);
-router.get('/cms/get-blogs', validationMiddleware(listBlogsValidation, 'query'), getBlogs);
+//router.get('/cms/get-blogs', validationMiddleware(listBlogsValidation, 'query'), getBlogs);
 //Blogs Routes
 router.post('/cms/blog/create', validationMiddleware(createBlogValidation), addBlog);
 router.get('/cms/blog/list', validationMiddleware(listBlogsValidation, 'query'), listBlogs);
