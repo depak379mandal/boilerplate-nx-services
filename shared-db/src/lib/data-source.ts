@@ -11,10 +11,14 @@ import { Page } from './entities/Page';
 import { PageRevision } from './entities/PageRevision';
 import { Media } from './entities/Media';
 import { User } from './entities';
+const DB_URL = process.env['DB_URL'];
+if (!DB_URL) {
+  throw new Error('Missing DB_URL in environment variables');
+}
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  url: 'postgres://admin:admin@localhost:5432/storageking',
+  url: DB_URL,
   synchronize: false,
   logging: true,
   entities: [
