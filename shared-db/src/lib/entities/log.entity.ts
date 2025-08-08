@@ -11,36 +11,36 @@ export class Log {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'json' })
+  @Column({ name: "body", type: 'json' })
   body: Record<string, any>;
 
-  @Column({ type: 'json' })
+  @Column({ name: "query", type: 'json' })
   query: Record<string, any>;
 
-  @Column({ type: 'json' })
+  @Column({ name: "params", type: 'json' })
   params: Record<string, any>;
 
-  @Column({ type: 'json' })
+  @Column({ name: "headers", type: 'json' })
   headers: Record<string, any>;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ name: "response", type: 'json', nullable: true })
   response: string;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ name: "error", type: 'json', nullable: true })
   error: Record<string, any>;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ name: "stack", type: 'json', nullable: true })
   stack: Record<string, any>;
 
-  @Column({ type: 'varchar' })
+  @Column({ name: "method", type: 'varchar' })
   method: string;
 
-  @Column({ type: 'varchar' })
+  @Column({ name: "url", type: 'varchar' })
   url: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ name: "created_at", type: 'timestamp' })
   createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ name: "updated_at", type: 'timestamp' })
   updatedAt: Date;
 }

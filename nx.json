@@ -12,6 +12,11 @@
       "!{projectRoot}/src/test-setup.[jt]s",
       "!{projectRoot}/test-setup.[jt]s"
     ],
+    "development": [
+      "default",
+      "!{projectRoot}/**/*.spec.ts",
+      "!{projectRoot}/**/*.test.ts"
+    ],
     "sharedGlobals": []
   },
   "nxCloudId": "6890a7c8c171c8351f6388c6",
