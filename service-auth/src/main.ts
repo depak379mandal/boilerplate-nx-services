@@ -1,3 +1,4 @@
+
 import express, { RequestHandler } from 'express';
 import { serverSetup, startServer } from '@./shared-utils';
 import { openApiDocument } from './auth.swagger';

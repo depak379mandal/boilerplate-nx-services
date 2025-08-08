@@ -10,22 +10,22 @@ export class Faq {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: "title", length: 45 })
+  @Column({ name: "title", length: 45, type: "varchar" })
   title: string;
 
-  @Column({ name: "description", length: 500 })
+  @Column({ name: "description", length: 500, type: "varchar" })
   description: string;
 
-  @Column({ name: "template", default: true, nullable: true })
+  @Column({ name: "template", default: true, nullable: true, type: "boolean" })
   template: boolean;
 
-  @Column({ name: "data", type: "text" })
+  @Column({ name: "data", type: "text", nullable: true })
   data: string;
 
-  @Column({ name: "status", default: true, nullable: true })
+  @Column({ name: "status", default: true, nullable: true, type: "boolean" })
   status: boolean;
 
-  @Column({ name: "is_deleted", default: false })
+  @Column({ name: "is_deleted", default: false, type: "boolean" })
   isDeleted: boolean;
 
   @CreateDateColumn({ name: "created_at" })

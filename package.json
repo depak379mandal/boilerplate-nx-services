@@ -5,7 +5,10 @@
   "private": true,
   "scripts": {
     "start": "nx run-many --target=serve --all",
-    "build": "nx run-many --target=build --all"
+    "build": "nx run-many --target=build -- ",
+    "build:all": "nx run-many --target=build --all",
+    "serve": "NODE_ENV=production dotenv -e .env -- sh -c 'node dist/service-$0/main.js'",
+    "dev": "sh -c 'nx serve service-$0'"
   },
   "dependencies": {
     "@asteasolutions/zod-to-openapi": "^8.1.0",
@@ -52,6 +55,7 @@
     "@types/node": "~18.16.9",
     "@types/passport": "^1.0.17",
     "@types/passport-jwt": "^4.0.1",
+    "dotenv-cli": "^10.0.0",
     "esbuild": "^0.19.2",
     "eslint": "^9.8.0",
     "eslint-config-prettier": "^10.0.0",

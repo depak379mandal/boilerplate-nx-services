@@ -9,19 +9,19 @@ export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: "title", length: 255 })
+  @Column({ name: "title", length: 255, type: "varchar" })
   title: string;
 
-  @Column({ name: "description", length: 500 })
+  @Column({ name: "description", length: 500, type: "varchar" })
   description: string;
 
-  @Column({ name: "slug", length: 45 })
+  @Column({ name: "slug", length: 45, type: "varchar" })
   slug: string;
 
-  @Column({ name: "status", default: true, nullable: true })
+  @Column({ name: "status", default: true, nullable: true, type: "boolean" })
   status: boolean;
 
-  @Column({ name: "is_deleted", default: false })
+  @Column({ name: "is_deleted", default: false, type: "boolean" })
   isDeleted: boolean;
 
   @CreateDateColumn({ name: "created_at" })

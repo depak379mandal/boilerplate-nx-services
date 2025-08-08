@@ -10,16 +10,16 @@ export class Blog {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: "title", length: 500 })
+  @Column({ name: "title", length: 500, type: "varchar" })
   title: string;
 
-  @Column({ name: "description", length: 1000 })
+  @Column({ name: "description", length: 1000, type: "varchar" })
   description: string;
 
-  @Column({ name: "thumbnail", length: 500 })
+  @Column({ name: "thumbnail", length: 500, type: "varchar" })
   thumbnail: string;
 
-  @Column({ name: "slug", length: 1000 })
+  @Column({ name: "slug", length: 1000, type: "varchar" })
   slug: string;
 
   @Column({ name: "components", type: "text", nullable: true })
@@ -31,10 +31,10 @@ export class Blog {
   @Column({ name: "pagedata", type: "text", nullable: true })
   pagedata: string;
 
-  @Column({ name: "status", default: true, nullable: true })
+  @Column({ name: "status", default: true, nullable: true, type: "boolean" })
   status: boolean;
 
-  @Column({ name: "is_deleted", default: false })
+  @Column({ name: "is_deleted", default: false, type: "boolean" })
   isDeleted: boolean;
 
   @CreateDateColumn({ name: "created_at" })

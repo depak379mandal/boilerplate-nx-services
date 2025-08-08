@@ -9,10 +9,10 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 100 })
+  @Column({ length: 100, type: "varchar" })
   name: string;
 
-  @Column({ length: 255, unique: true })
+  @Column({ length: 255, unique: true, type: "varchar" })
   email: string;
 
   @OneToMany(() => BlogComment, (comment) => comment.user)

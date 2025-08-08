@@ -14,16 +14,16 @@ export class PageRevision {
   @JoinColumn({ name: "page_id" })
   page: Page;
 
-  @Column({ name: "title", length: 500 })
+  @Column({ name: "title", length: 500, type: "varchar" })
   title: string;
 
-  @Column({ name: "type", length: 30, nullable: true })
+  @Column({ name: "type", length: 30, nullable: true, type: "varchar" })
   type: string;
 
-  @Column({ name: "description", length: 1000 })
+  @Column({ name: "description", length: 1000, type: "varchar" })
   description: string;
 
-  @Column({ name: "slug", length: 1000 })
+  @Column({ name: "slug", length: 1000, type: "varchar" })
   slug: string;
 
   @Column({ name: "components", type: "text", nullable: true })
@@ -38,10 +38,10 @@ export class PageRevision {
   @Column({ name: "pagedata", type: "text", nullable: true })
   pagedata: string;
 
-  @Column({ name: "status", default: true, nullable: true })
+  @Column({ name: "status", default: true, nullable: true, type: "boolean" })
   status: boolean;
 
-  @Column({ name: "include_sidebar", default: false })
+  @Column({ name: "include_sidebar", default: false, type: "boolean" })
   includeSidebar: boolean;
 
   @ManyToOne(() => Faq, (faq) => faq.pageRevisions, { nullable: true })

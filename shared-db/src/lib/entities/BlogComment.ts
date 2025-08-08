@@ -3,7 +3,7 @@ import {
   ManyToOne, CreateDateColumn, UpdateDateColumn, JoinColumn
 } from "typeorm";
 import { Blog } from "./Blog";
-import { User } from "./user.entity";
+import { User } from "./User";
 
 @Entity("blog_comments")
 export class BlogComment {
@@ -18,13 +18,13 @@ export class BlogComment {
   @JoinColumn({ name: "user_id" })
   user: User;
 
-  @Column({ name: "comment", length: 1000 })
+  @Column({ name: "comment", length: 1000, type: "varchar" })
   comment: string;
 
-  @Column({ name: "website_url", nullable: true })
+  @Column({ name: "website_url", nullable: true, type: "varchar" })
   websiteUrl: string;
 
-  @Column({ name: "status", default: true })
+  @Column({ name: "status", default: true, type: "boolean" })
   status: boolean;
 
   @CreateDateColumn({ name: "created_at" })
